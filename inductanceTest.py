@@ -13,9 +13,14 @@
 #
 # -------------------------------------------------------------------------
 #
+# Solution d'Alexandre Mahy
+# Modifié pour correspondre aux données du groupe 11.61
+# dans le cadre du projet P2
+#
+# -------------------------------------------------------------------------
+
 
 from numpy import *
-#import numpy as np
 from scipy.special import roots_legendre
 import matplotlib.pyplot as plt
 
@@ -143,69 +148,6 @@ def inductanceGaussLegendre(X0,Xf,Z0,Zf,n,m,nGaussLegendre):
   
     return [X,Z,W]
 
-
-def brouillon_inductanceGaussLegendre(X0,Xf,Z0,Zf,n,m,nGaussLegendre):
- 
-# 
-# A COMPLETER / MODIFIER
-#
- 
-    xi,we = roots_legendre(nGaussLegendre)  
-  
-    size = max(n*nGaussLegendre,1)*max(m*nGaussLegendre,1)
-    X = X0 * ones(size)
-    Z = Z0 * ones(size)
-    W = ones(size)
-    
-    hx = (Xf-X0)/max(n, 1)
-    hz = (Zf-Z0)/max(m, 1)
-    
-    X_uni = zeros(max(n*nGaussLegendre,1))
-    Z_uni = zeros(max(m*nGaussLegendre,1))
-    
-    for i in range(n):
-        X1 = X0 + i*hx ; X2 = X0 + (i+1)*hx
-        X_uni[i*nGaussLegendre : (i+1)*nGaussLegendre] = ((X2-X1)/2)*xi + (X1+X2)/2
-        
-    for j in range(m):
-        Z1 = Z0 + j*hz ; Z2 = Z0 + (j+1)*hz
-        Z_uni[j*nGaussLegendre : (j+1)*nGaussLegendre] = ((Z2-Z1)/2)*xi + (Z1+Z2)/2
-    
-    if n == 0 and m == 0:
-        return [[X0],[Z0],[1]]
-    
-    if n == 0:
-        Z = Z_uni
-        W = concatenate(tuple([we for i in range(m)]))/(2*m) # à modifier
-        return [X,Z,W]
-    
-    if m == 0:
-        X = X_uni
-        W = concatenate(tuple([we for i in range(n)])) # à modifier
-        W = W * X*hx*pi
-        return [X,Z,W]
-    
-    W_x = concatenate(tuple([we for i in range(n)]))
-    W_z = concatenate(tuple([we for i in range(m)]))
-                      
-    W_matrice = zeros((m*nGaussLegendre, n*nGaussLegendre))
-    for i in range(n*nGaussLegendre):
-        for j in range(m*nGaussLegendre):
-            W_matrice[j, i] = X_uni[i]*W_x[i]*W_z[j]
-    W_matrice = W_matrice * pi*hx/(2*m)
-    """W = W_z@W_x.T
-    W = W * X_uni"""
-    W = W_matrice.flatten()
-    
-    Z = concatenate(tuple([ [Z_uni[i] for j in range(n*nGaussLegendre)] for i in range(m*nGaussLegendre)]))
-    X = concatenate(tuple([X_uni for i in range(m*nGaussLegendre)]))
-  
- 
-# 
-# A COMPLETER / MODIFIER
-#
-  
-    return [X,Z,W]
 
 #
 # FONCTIONS A MODIFIER [end]

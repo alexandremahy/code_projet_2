@@ -43,8 +43,3 @@ plt.xlabel("Période [$\mu$s]")
 
 plt.ylabel("$\Delta V$ [V]")
 plt.show()
-
-R = 6200 # 6200
-T = 2*log(2)*C_G*R
-T = 9.92e-6
-print(Vcc*((1/(1+exp(-T/(2*tau_n))))))

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 ###############################
 
 
-t_begin = 0 # 0.4e-3 # [s]
+t_begin = 0 # [s]
 t_end = 2e-5 # [s]
 n = 10000 # nombre de points dans t
 t = linspace(t_begin, t_end, n)
@@ -248,9 +248,6 @@ def graphe_crête():
     plt.plot(t, VC, label="$V_C$", color="b")
     plt.xlabel("Temps [s]")
     plt.ylabel("Tension [V]")
-    #plt.ylim(4, 4.25)
-    #plt.ylim(-0.1, 5.1)
-    #plt.xlim(0, 0.001)
     plt.legend()
     plt.show()
     
@@ -315,7 +312,6 @@ def simulation_soustracteur(VC, R_L, L_n, L_m):
     
     rapport = 3/(Vm_max-Vn_max)
     Vsous = (3*Vm_max)/(3+Vm_max-Vn_max)
-    #print(Vsous, rapport)
     
     VF = (1+rapport)*Vsous - rapport*VC
     VF[VF>alimentation] = alimentation # toutes les valeurs de VF plus grandes que 5 sont ramenées à 5
@@ -323,25 +319,6 @@ def simulation_soustracteur(VC, R_L, L_n, L_m):
         
     return VF, Vsous*ones(n), rapport
 
-def graphe_soustracteur_double():
-    
-    fig, (ax1, ax2) = plt.subplots(2)
-    fig.suptitle("Tensions du bloc soustracteur de métal en fonction du temps")
-    
-    #ax1.plot(t, (1+rapport)*Vsous, label="$aV_{sous}$"+", a={:.2f}".format(1+rapport), color="b")
-    #ax1.plot(t, rapport*VC, label="$bV_C$"+", b={:.2f}".format(rapport), color="r")
-    #ax1.plot(t, Vsous, label="$V_{sous}$", color="b")
-    ax1.plot(t, VC, label="$V_C$", color="r")
-    ax1.set(ylabel="Tension [V]")
-    ax1.legend()
-    
-    #ax2.plot(t, Vsous, label="$V_{sous}$", color="b")
-    #ax2.plot(t, VC, label="$V_C$", color="r")
-    ax2.plot(t, VF, label="$V_F = aV_{sous} - bV_C$", color="y")
-    ax2.set(xlabel="Temps [s]", ylabel="Tension [V]")
-    ax2.legend()
-    
-    plt.show()
     
 def graphe_soustracteur_simple():
     
@@ -438,7 +415,6 @@ def graphe_schéma():
     plt.xticks([])
     plt.yticks([])
     #plt.yticks([2.5], ["$V_{ref}$"])
-    #plt.yticks([2.5, 5], ["$V_{ref}$", "$V_{cc}$"])
     plt.legend()
     plt.show()
 
@@ -480,20 +456,16 @@ VL, Vm = simulation_inductance_double(VS, R_L, L_n, L_m)
 #graphe_inductance_double()
 
 #VL = simulation_inductance_simple(VS, R_L, L_n, L_m)
-#print(max(VL))
-graphe_inductance_simple()
+#graphe_inductance_simple()
 
 """Détecteur de crête"""
-V_tri = signal_triangle(1000, 2) # signal triangulaire 1 [kHz] entre 0 et 2 [V]
-VC1, VL, VC_min = simulation_crête(V_tri, C_det, 330)
-VC2, VL, VC_min = simulation_crête(V_tri, C_det, 990)
-VC3, VL, VC_min = simulation_crête(V_tri, C_det, 10000)
+#V_tri = signal_triangle(1000, 2) # signal triangulaire 1 [kHz] entre 0 et 2 [V]
+#VC1, VL, VC_min = simulation_crête(V_tri, C_det, 330)
+#VC2, VL, VC_min = simulation_crête(V_tri, C_det, 990)
+#VC3, VL, VC_min = simulation_crête(V_tri, C_det, 10000)
 #graphe_multiple_crête(VL, VC1, VC2, VC3)
 
 VC, VL, VC_min = simulation_crête(Vm, C_det, R_det)
-#print(max(VC))
-#print("Tension minimale de VC en régime = {} [V]".format(VC_min))
-#print("VC_max = {} [V]".format(max(VC)))
 #graphe_crête()
 
 """Soustracteur"""
